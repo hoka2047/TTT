@@ -1,0 +1,6 @@
+var currentPlayer = 'X';
+var gameState = [
+	[null, null, null],
+	[null, null, null],
+	[null, null, null]
+];
