@@ -4,6 +4,8 @@ var gameState = [
 	[null, null, null],
 	[null, null, null]
 ];
+
+// Define a function to handle cell clicks
 function handleCellClick(event) {
 	// Get the row and column of the clicked cell
 	var row = event.target.parentNode.rowIndex;
@@ -24,12 +26,14 @@ function handleCellClick(event) {
 	var winner = checkForWinner();
 	if (winner !== null) {
 		document.getElementById('message').textContent = winner + ' wins!';
-		return;
+		disableCells();
 	}
 
 	// Switch to the other player
 	currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
 }
+
+// Define a function to check for a winner
 function checkForWinner() {
 	// Check rows
 	for (var row = 0; row < 3; row++) {
@@ -56,12 +60,34 @@ function checkForWinner() {
 	// If there is no winner, return null
 	return null;
 }
-document.getElementById('cell00').addEventListener('click', handleCellClick);
-document.getElementById('cell01').addEventListener('click', handleCellClick);
-document.getElementById('cell02').addEventListener('click', handleCellClick);
-document.getElementById('cell10').addEventListener('click', handleCellClick);
-document.getElementById('cell11').addEventListener('click', handleCellClick);
-document.getElementById('cell12').addEventListener('click', handleCellClick);
-document.getElementById('cell20').addEventListener('click', handleCellClick);
-document.getElementById('cell21').addEventListener('click', handleCellClick);
-document.getElementById('cell22').addEventListener('click', handleCellClick);
+
+// Define a function to disable all cells
+function disableCells() {
+	var cells = document.getElementsByTagName('td');
+	for (var i = 0; i < cells.length; i++) {
+		cells[i].removeEventListener('click', handleCellClick);
+	}
+}
+
+// Define a function to reset the game
+function resetGame() {
+	var cells = document.getElementsByTagName('td');
+	for (var i = 0; i < cells.length; i++) {
+		cells[i].textContent = '';
+		cells[i].addEventListener('click', handleCellClick);
+	}
+	gameState = [
+		[null, null, null],
+		[null, null, null],
+		[null, null, null]
+	];
+	currentPlayer = 'X';
+	document.getElementById('message').textContent = '';
+}
+
+// Add event listeners to cells and restart button
+var cells = document.getElementsByTagName('td');
+for (var i = 0; i < cells.length; i++) {
+	cells[i].addEventListener('click', handleCellClick);
+}
+document.getElementById('restart').addEventListener('click', resetGame);
